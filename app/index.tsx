@@ -41,8 +41,8 @@ export default function SplashScreen() {
     anim3.start();
 
     const timer = setTimeout(() => {
-      // Navigate to the main tabs
-      router.replace('/(tabs)');
+      // Navigate to the welcome screen
+      router.replace('/welcome');
     }, 3000);
 
     return () => {
