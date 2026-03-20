@@ -15,7 +15,7 @@ export default function BasicInfoScreen() {
 
   const handleNext = () => {
     // Navigate to next intake screen or tabs
-    router.replace('/(tabs)');
+    router.replace('/intake-goals');
   };
 
   const handleBack = () => {

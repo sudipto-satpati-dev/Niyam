@@ -42,6 +42,10 @@ export default function RootLayout() {
         <Stack.Screen name="welcome3" options={{ headerShown: false }} />
         <Stack.Screen name="choose-plan" options={{ headerShown: false }} />
         <Stack.Screen name="basic-info" options={{ headerShown: false }} />
+        <Stack.Screen name="intake-goals" options={{ headerShown: false }} />
+        <Stack.Screen name="intake-schedule" options={{ headerShown: false }} />
+        <Stack.Screen name="intake-diet" options={{ headerShown: false }} />
+        <Stack.Screen name="intake-activity" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
