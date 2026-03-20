@@ -1,11 +1,12 @@
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { Fonts } from '@/constants/theme';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'quote';
 };
 
 export function ThemedText({
@@ -26,6 +27,7 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'quote' ? styles.quote : undefined,
         style,
       ]}
       {...rest}
@@ -35,26 +37,33 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
+    fontFamily: Fonts.dmSans.regular,
     fontSize: 16,
     lineHeight: 24,
   },
   defaultSemiBold: {
+    fontFamily: Fonts.dmSans.semiBold,
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: '600',
   },
   title: {
+    fontFamily: Fonts.fraunces.bold,
     fontSize: 32,
-    fontWeight: 'bold',
     lineHeight: 32,
   },
   subtitle: {
+    fontFamily: Fonts.fraunces.semiBold,
     fontSize: 20,
-    fontWeight: 'bold',
   },
   link: {
+    fontFamily: Fonts.dmSans.regular,
     lineHeight: 30,
     fontSize: 16,
     color: '#0a7ea4',
+  },
+  quote: {
+    fontFamily: Fonts.fraunces.italic,
+    fontSize: 18,
+    lineHeight: 28,
   },
 });
