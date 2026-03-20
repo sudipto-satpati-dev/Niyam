@@ -12,7 +12,7 @@ export default function Welcome3Screen() {
   const insets = useSafeAreaInsets();
 
   const handleStart = () => {
-    router.replace('/(tabs)');
+    router.replace('/choose-plan');
   };
 
   return (

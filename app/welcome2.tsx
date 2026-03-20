@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Image } from 'expo-image';
+
 
 const { width } = Dimensions.get('window');
 
@@ -62,11 +62,9 @@ export default function Welcome2Screen() {
               <Text style={styles.aiInsightText}>Consistent logging improves results by 40%.</Text>
             </View>
 
-            <Image 
-              source={require('@/welcome-slide-2.png')} 
-              style={styles.mockupImage} 
-              contentFit="cover" 
-            />
+            <View style={styles.mockupImagePlaceholder}>
+              <MaterialIcons name="restaurant" size={32} color="#bfc9be" />
+            </View>
           </View>
         </View>
       </View>
@@ -191,12 +189,14 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
   },
-  mockupImage: {
+  mockupImagePlaceholder: {
     width: '100%',
     height: 96,
     borderRadius: 12,
-    opacity: 0.6,
     marginTop: 'auto',
+    backgroundColor: '#f4f4f2',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   aiInsightBubble: {
     position: 'absolute',
