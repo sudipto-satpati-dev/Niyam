@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { getCalorieNote, getMonthMealColor } from '../../utils/trackerScore';
+import { getCalorieNote, getMonthMealColor, getScoreColor } from '../../utils/trackerScore';
 
 type MonthViewProps = {
   data: any; // Using the mock month data arrays/objects
@@ -36,10 +36,16 @@ export const MonthView = ({ data }: MonthViewProps) => {
 
         <Text style={styles.monthNoteText}>Consistent — room to improve</Text>
 
-        <View style={styles.fauxChartBox}>
-          {/* Faux area chart using a curved-looking view */}
-          <View style={styles.fauxChartCurve} />
-          <View style={styles.fauxChartDot} />
+        <View style={styles.miniChartContainer}>
+          {scoreTrend.map((score: number, i: number) => {
+            const heightPct = Math.max((score / 100) * 100, 10);
+            const color = score === 0 ? '#E2E3E1' : getScoreColor(score);
+            return (
+              <View key={i} style={styles.miniBarColumn}>
+                <View style={[styles.miniBar, { height: `${heightPct}%`, backgroundColor: color }]} />
+              </View>
+            );
+          })}
         </View>
       </View>
     );
@@ -71,36 +77,71 @@ export const MonthView = ({ data }: MonthViewProps) => {
 
   // 3. Days on Track Calendar
   const renderCalendar = () => {
-    // We need an array of 31 days. Using a mock pattern mimicking the design:
-    // mostly green, some red, some future (gray)
-    const mockGrid = [
-      1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, -1, -1
+    const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+    // Exactly replicating a full 31-day visual layout
+    const gridCells = [
+      { day: '', type: 'empty' }, { day: '', type: 'empty' }, { day: '', type: 'empty' }, { day: '', type: 'empty' }, { day: '', type: 'empty' },
+      { day: 1, type: 'good' }, { day: 2, type: 'average' },
+      { day: 3, type: 'good' }, { day: 4, type: 'excellent' }, { day: 5, type: 'excellent' }, { day: 6, type: 'good' }, { day: 7, type: 'excellent' }, { day: 8, type: 'bad' }, { day: 9, type: 'good' },
+      { day: 10, type: 'excellent' }, { day: 11, type: 'excellent' }, { day: 12, type: 'good' }, { day: 13, type: 'excellent' }, { day: 14, type: 'good' }, { day: 15, type: 'average' }, { day: 16, type: 'excellent' },
+      { day: 17, type: 'good' }, { day: 18, type: 'excellent' }, { day: 19, type: 'good' }, { day: 20, type: 'average' }, { day: 21, type: 'excellent' }, { day: 22, type: 'excellent' }, { day: 23, type: 'good' },
+      { day: 24, type: 'bad' }, { day: 25, type: 'good' }, { day: 26, type: 'excellent' }, { day: 27, type: 'good' }, { day: 28, type: 'average' }, { day: 29, type: 'excellent' }, { day: 30, type: 'excellent' }, { day: 31, type: 'good' }
     ];
+
+    const getColor = (type: string) => {
+      switch (type) {
+        case 'excellent': return '#297347'; // dark green as it is
+        case 'good': return '#92BAA2';      // lighter green
+        case 'average': return '#DCE2DD';   // gray as it is
+        case 'bad': return '#C24D4D';       // red
+        case 'empty': return 'transparent';
+        default: return 'transparent';
+      }
+    };
+
+    const getTextColor = (type: string) => {
+      return (type === 'excellent' || type === 'bad') ? '#FFFFFF' : '#1A1C1B';
+    };
+
     return (
       <View style={styles.card}>
-        <Text style={styles.sectionEyebrow}>DAYS ON TRACK THIS MONTH</Text>
-        <View style={styles.pillsRow}>
-          <View style={[styles.tagPill, { backgroundColor: 'rgba(29, 111, 66, 0.1)' }]}>
-            <View style={[styles.dot, { backgroundColor: '#1D6F42' }]} />
-            <Text style={[styles.tagText, { color: '#1D6F42' }]}>{monthStats.daysTracked} days tracked</Text>
-          </View>
-          <View style={[styles.tagPill, { backgroundColor: 'rgba(136, 82, 0, 0.1)' }]}>
-            <View style={[styles.dot, { backgroundColor: '#885200' }]} />
-            <Text style={[styles.tagText, { color: '#885200' }]}>{monthStats.bestStreak} day best streak</Text>
-          </View>
-          <View style={[styles.tagPill, { backgroundColor: 'rgba(186, 26, 26, 0.1)' }]}>
-            <View style={[styles.dot, { backgroundColor: '#BA1A1A' }]} />
-            <Text style={[styles.tagText, { color: '#BA1A1A' }]}>3 days missed</Text>
-          </View>
+        {/* Calendar Header */}
+        <View style={styles.calHeaderRow}>
+          {weekDays.map((d, i) => (
+            <Text key={i} style={styles.calHeaderText}>{d}</Text>
+          ))}
         </View>
 
-        <View style={styles.gridBox}>
-          {mockGrid.map((state, i) => {
-            let color = '#1D6F42'; // green
-            if (state === 0) color = 'rgba(186, 26, 26, 0.4)'; // light red
-            if (state === -1) color = '#EEEEEC'; // future/gray
-            return <View key={i} style={[styles.gridCell, { backgroundColor: state === 1 ? 'rgba(29, 111, 66, 0.8)' : color }]} />;
-          })}
+        {/* Grid */}
+        <View style={styles.calGrid}>
+          {gridCells.map((cell, i) => (
+            <View key={i} style={styles.calCellWrapper}>
+              <View style={[styles.calCell, { backgroundColor: getColor(cell.type) }]}>
+                <Text style={[styles.calCellText, { color: getTextColor(cell.type) }]}>{cell.day}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        {/* Legend */}
+        <View style={styles.calLegendContainer}>
+          <View style={styles.calLegendItem}>
+            <View style={[styles.calLegendBox, { backgroundColor: getColor('bad') }]} />
+            <Text style={styles.calLegendText}>Bad</Text>
+          </View>
+          <View style={styles.calLegendItem}>
+            <View style={[styles.calLegendBox, { backgroundColor: getColor('average') }]} />
+            <Text style={styles.calLegendText}>Average</Text>
+          </View>
+          <View style={styles.calLegendItem}>
+            <View style={[styles.calLegendBox, { backgroundColor: getColor('good') }]} />
+            <Text style={styles.calLegendText}>Good</Text>
+          </View>
+          <View style={styles.calLegendItem}>
+            <View style={[styles.calLegendBox, { backgroundColor: getColor('excellent') }]} />
+            <Text style={styles.calLegendText}>Excellent</Text>
+          </View>
         </View>
       </View>
     );
@@ -237,18 +278,10 @@ const styles = StyleSheet.create({
   badgeText: { fontFamily: 'DM-Sans-Bold', fontSize: 10, textTransform: 'uppercase', letterSpacing: -0.5 },
   monthNoteText: { fontFamily: 'DM-Sans-Medium', fontSize: 13, color: 'rgba(26,28,27,0.6)', marginBottom: 24 },
 
-  // Faux Chart
-  fauxChartBox: { height: 96, width: '100%', position: 'relative', overflow: 'hidden' },
-  fauxChartCurve: {
-    position: 'absolute', width: '120%', height: 120,
-    borderTopWidth: 2, borderColor: '#BA7517',
-    borderRadius: 100, top: 40, left: -20,
-    backgroundColor: 'rgba(186,117,23,0.1)'
-  },
-  fauxChartDot: {
-    position: 'absolute', width: 8, height: 8, borderRadius: 4,
-    backgroundColor: '#BA7517', right: 20, top: 46
-  },
+  // Monthly Trend Chart
+  miniChartContainer: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', height: 80, gap: 2, marginTop: 8 },
+  miniBarColumn: { flex: 1, height: '100%', justifyContent: 'flex-end' },
+  miniBar: { width: '100%', borderRadius: 4 },
 
   // Calorie
   cardTitleMediumPrimary: { fontFamily: 'DM-Sans-Medium', fontSize: 13, color: '#00552E' },
@@ -259,12 +292,16 @@ const styles = StyleSheet.create({
   infoBoxText: { flex: 1, fontFamily: 'DM-Sans', fontSize: 13, color: '#3F4941', lineHeight: 20 },
 
   // Days Calendar
-  pillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 16, marginBottom: 8 },
-  tagPill: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, gap: 8 },
-  dot: { width: 6, height: 6, borderRadius: 3 },
-  tagText: { fontFamily: 'DM-Sans-Bold', fontSize: 11 },
-  gridBox: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, paddingTop: 8 },
-  gridCell: { width: '12.6%', aspectRatio: 1, borderRadius: 4 }, // roughly 7 cols
+  calHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 0, marginTop: 4, marginBottom: 4 },
+  calHeaderText: { width: '14.28%', textAlign: 'center', fontFamily: 'DM-Sans-Bold', fontSize: 10, color: 'rgba(26,28,27,0.4)' },
+  calGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', marginHorizontal: -4 },
+  calCellWrapper: { width: '14.28%', padding: 4 },
+  calCell: { flex: 1, aspectRatio: 1, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  calCellText: { fontFamily: 'DM-Sans-Bold', fontSize: 13 },
+  calLegendContainer: { flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 16, paddingBottom: 0 },
+  calLegendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  calLegendBox: { width: 12, height: 12, borderRadius: 3 },
+  calLegendText: { fontFamily: 'DM-Sans-Medium', fontSize: 10, color: 'rgba(26,28,27,0.7)' },
 
   // Food habits
   barLabel: { fontFamily: 'DM-Sans-Bold', fontSize: 11, color: 'rgba(26,28,27,0.5)' },
