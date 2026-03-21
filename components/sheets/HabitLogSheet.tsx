@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 
 const habitInfoMap: Record<string, { name: string; description: string; icon: string }> = {
@@ -32,15 +32,28 @@ interface HabitLogSheetProps {
 export default function HabitLogSheet({ bottomSheetRef, habitKey, onMarkDone, onSkip, onClose }: HabitLogSheetProps) {
   const info = habitInfoMap[habitKey] ?? { name: habitKey, description: '', icon: 'star-outline' };
 
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.6}
+      />
+    ),
+    []
+  );
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      snapPoints={['45%']}
+      snapPoints={['50%']}
       enablePanDownToClose
       onClose={onClose}
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.indicator}
+      backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={styles.container}>
         <View style={styles.iconContainer}>
@@ -65,13 +78,15 @@ export default function HabitLogSheet({ bottomSheetRef, habitKey, onMarkDone, on
 
 const styles = StyleSheet.create({
   sheetBg: {
-    backgroundColor: '#FAFAF8',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: '#F9F9F7',
+    borderTopLeftRadius: 36,
+    borderTopRightRadius: 36,
   },
   indicator: {
-    backgroundColor: '#D0D0C8',
-    width: 40,
+    backgroundColor: '#E2E3E1',
+    width: 48,
+    height: 4,
+    marginTop: 8,
   },
   container: {
     flex: 1,
@@ -88,16 +103,16 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   sheetTitle: {
-    fontFamily: 'Fraunces_700Bold',
-    fontSize: 22,
-    color: '#1A1A1A',
+    fontFamily: 'Fraunces-Bold',
+    fontSize: 26,
+    color: '#1A1C1B',
     marginBottom: 10,
     textAlign: 'center',
   },
   description: {
-    fontFamily: 'DMSans_400Regular',
+    fontFamily: 'DM-Sans',
     fontSize: 15,
-    color: '#666',
+    color: '#6F7A70',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 22,
@@ -111,27 +126,27 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 2,
     borderColor: '#1D6F42',
-    borderRadius: 14,
-    paddingVertical: 15,
+    borderRadius: 16,
+    paddingVertical: 18,
     alignItems: 'center',
   },
   skipButtonText: {
-    fontFamily: 'DMSans_600SemiBold',
+    fontFamily: 'DM-Sans-Bold',
     fontSize: 15,
     color: '#1D6F42',
   },
   doneButton: {
     flex: 1,
     backgroundColor: '#1D6F42',
-    borderRadius: 14,
-    paddingVertical: 15,
+    borderRadius: 16,
+    paddingVertical: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
   },
   doneButtonText: {
-    fontFamily: 'DMSans_700Bold',
+    fontFamily: 'DM-Sans-Bold',
     fontSize: 15,
     color: 'white',
   },

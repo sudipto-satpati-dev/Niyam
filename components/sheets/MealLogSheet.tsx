@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 
 const mealLabelMap: Record<string, string> = {
@@ -63,11 +63,23 @@ export default function MealLogSheet({ bottomSheetRef, mealKey, onSave, onClose 
     }
   }, [selectedOption, onSave]);
 
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.6}
+      />
+    ),
+    []
+  );
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      snapPoints={['70%']}
+      snapPoints={['75%']}
       enablePanDownToClose
       onClose={() => {
         setSelectedId(null);
@@ -75,31 +87,48 @@ export default function MealLogSheet({ bottomSheetRef, mealKey, onSave, onClose 
       }}
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.indicator}
+      backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={styles.container}>
         <Text style={styles.sheetTitle}>Log {mealLabel}</Text>
         <Text style={styles.sheetSub}>Choose what you had</Text>
 
-        <ScrollView style={{ marginTop: 12 }} showsVerticalScrollIndicator={false}>
-          {options.map(option => (
-            <TouchableOpacity
-              key={option.id}
-              style={[
-                styles.optionCard,
-                selectedId === option.id && styles.optionCardSelected,
-              ]}
-              onPress={() => setSelectedId(option.id)}
-              activeOpacity={0.8}
-            >
-              <View style={{ flex: 1 }}>
-                <Text style={styles.optionName}>{option.name}</Text>
-                <Text style={styles.optionKcal}>{option.kcal} kcal</Text>
-              </View>
-              {selectedId === option.id && (
-                <Ionicons name="checkmark-circle" size={22} color="#1D6F42" />
-              )}
-            </TouchableOpacity>
-          ))}
+        <ScrollView style={{ marginTop: 24 }} showsVerticalScrollIndicator={false}>
+          {options.map((option, index) => {
+            const isSelected = selectedId === option.id;
+            const avatarText = String.fromCharCode(65 + index); // A, B, C...
+
+            return (
+              <TouchableOpacity
+                key={option.id}
+                style={[
+                  styles.optionCard,
+                  isSelected && styles.optionCardSelected,
+                ]}
+                onPress={() => setSelectedId(option.id)}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.avatar, isSelected && styles.avatarSelected]}>
+                  <Text style={[styles.avatarText, isSelected && styles.avatarTextSelected]}>
+                    {avatarText}
+                  </Text>
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.optionName, isSelected && styles.optionNameSelected]}>
+                    {option.name}
+                  </Text>
+                  <Text style={[styles.optionKcal, isSelected && styles.optionKcalSelected]}>
+                    {option.kcal} KCAL
+                  </Text>
+                </View>
+                
+                {isSelected && (
+                  <Ionicons name="checkmark-circle" size={24} color="#1D6F42" />
+                )}
+              </TouchableOpacity>
+            );
+          })}
 
           <TouchableOpacity style={styles.customRow}>
             <Ionicons name="pencil-outline" size={16} color="#6B6B6B" />
@@ -123,81 +152,110 @@ export default function MealLogSheet({ bottomSheetRef, mealKey, onSave, onClose 
 
 const styles = StyleSheet.create({
   sheetBg: {
-    backgroundColor: '#FAFAF8',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: '#F9F9F7', // Matches app background
+    borderTopLeftRadius: 36,
+    borderTopRightRadius: 36,
   },
   indicator: {
-    backgroundColor: '#D0D0C8',
-    width: 40,
+    backgroundColor: '#E2E3E1',
+    width: 48,
+    height: 4,
+    marginTop: 8,
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 32,
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    paddingBottom: 40,
   },
   sheetTitle: {
-    fontFamily: 'Fraunces_700Bold',
-    fontSize: 22,
-    color: '#1A1A1A',
+    fontFamily: 'Fraunces-Bold',
+    fontSize: 26,
+    color: '#1A1C1B',
     marginBottom: 4,
-    marginTop: 8,
   },
   sheetSub: {
-    fontFamily: 'DMSans_400Regular',
+    fontFamily: 'DM-Sans',
     fontSize: 14,
-    color: '#777',
-    marginBottom: 4,
+    color: '#6F7A70',
+    marginBottom: 8,
   },
   optionCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     padding: 16,
-    marginBottom: 8,
-    borderWidth: 2,
-    borderColor: '#F0F0EC',
+    marginBottom: 16,
+    borderLeftWidth: 6,
+    borderLeftColor: 'transparent', // Reserved for selected state
   },
   optionCardSelected: {
-    borderColor: '#1D6F42',
-    backgroundColor: '#F1FAF5',
+    backgroundColor: '#F4F9F6',
+    borderLeftColor: '#1D6F42',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F2F2F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  avatarSelected: {
+    backgroundColor: '#1D6F42',
+  },
+  avatarText: {
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 14,
+    color: '#1A1C1B',
+  },
+  avatarTextSelected: {
+    color: '#FFFFFF',
   },
   optionName: {
-    fontFamily: 'DMSans_600SemiBold',
+    fontFamily: 'DM-Sans-Bold',
     fontSize: 15,
-    color: '#1A1A1A',
-    marginBottom: 2,
+    color: '#1A1C1B',
+    marginBottom: 4,
+  },
+  optionNameSelected: {
+    color: '#1A1C1B',
   },
   optionKcal: {
-    fontFamily: 'DMSans_400Regular',
-    fontSize: 13,
-    color: '#888',
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 11,
+    color: '#8AA393', // Unselected green/gray
+    letterSpacing: 0.5,
+  },
+  optionKcalSelected: {
+    color: '#1D6F42', // Vivid green when selected
   },
   customRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 14,
     gap: 10,
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 24,
   },
   customText: {
-    fontFamily: 'DMSans_400Regular',
+    fontFamily: 'DM-Sans',
     fontSize: 14,
-    color: '#6B6B6B',
+    color: '#6F7A70',
   },
   saveButton: {
     backgroundColor: '#1D6F42',
-    borderRadius: 14,
-    paddingVertical: 16,
+    borderRadius: 16,
+    paddingVertical: 18,
     alignItems: 'center',
   },
   saveButtonDisabled: {
-    backgroundColor: '#B8D4C5',
+    backgroundColor: '#A3CAB3', // Faded green
   },
   saveButtonText: {
-    fontFamily: 'DMSans_700Bold',
+    fontFamily: 'DM-Sans-Bold',
     fontSize: 16,
     color: 'white',
   },

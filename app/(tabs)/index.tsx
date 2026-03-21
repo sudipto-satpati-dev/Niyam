@@ -186,6 +186,21 @@ export default function HomeScreen() {
     );
   }, [today, tick, handleItemPress]);
 
+  const renderListFooter = useCallback(() => (
+    <View style={styles.summaryCardsRow}>
+      <View style={styles.summaryCard}>
+        <Ionicons name="moon" size={24} color="#C48118" style={styles.summaryIcon} />
+        <Text style={styles.summaryCardLabel}>SLEEP QUALITY</Text>
+        <Text style={styles.summaryCardTitle}>Awaiting data</Text>
+      </View>
+      <View style={styles.summaryCard}>
+        <Ionicons name="water" size={24} color="#1D6F42" style={styles.summaryIcon} />
+        <Text style={styles.summaryCardLabel}>HYDRATION</Text>
+        <Text style={styles.summaryCardTitle}>0 / 2.5 L</Text>
+      </View>
+    </View>
+  ), []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.root}>
@@ -261,6 +276,7 @@ export default function HomeScreen() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}
               tintColor="#1D6F42" colors={['#1D6F42']} />
           }
+          ListFooterComponent={renderListFooter}
         />
 
         {/* ── FAB ── */}
@@ -505,6 +521,36 @@ const styles = StyleSheet.create({
     fontFamily: 'DM-Sans-SemiBold',
     fontSize: 12,
     color: '#633806',
+  },
+
+  // Summary Cards (Footer)
+  summaryCardsRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    gap: 12,
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  summaryCard: {
+    flex: 1,
+    backgroundColor: '#F4F4F2',
+    borderRadius: 24,
+    padding: 18,
+  },
+  summaryIcon: {
+    marginBottom: 16,
+  },
+  summaryCardLabel: {
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 9,
+    color: '#6F7A70',
+    letterSpacing: 1.0,
+    marginBottom: 6,
+  },
+  summaryCardTitle: {
+    fontFamily: 'Fraunces-Bold',
+    fontSize: 16,
+    color: '#1A1C1B',
   },
 
   // FAB
