@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
-import { getCalorieNote, getMonthMealColor, getScoreColor } from '../../utils/trackerScore';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { getCalorieNote, getMonthMealColor, getScoreColor } from '../../utils/trackerScore';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -79,7 +79,7 @@ export const MonthView = ({ data }: MonthViewProps) => {
       labelColor: (opacity = 1) => `rgba(26,28,27,0.5)`,
       strokeWidth: 3,
       propsForDots: {
-        r: '0', 
+        r: '0',
       },
       useShadowColorFromDataset: false,
     };
@@ -101,7 +101,7 @@ export const MonthView = ({ data }: MonthViewProps) => {
 
           <LineChart
             data={data}
-            width={screenWidth - 24} // wider to ensure labels are contained
+            width={screenWidth - 48} // Properly fit inside the card width
             height={180}
             chartConfig={chartConfig}
             bezier
@@ -114,8 +114,8 @@ export const MonthView = ({ data }: MonthViewProps) => {
             yAxisSuffix=""
             style={{
               paddingRight: 0,
-              paddingLeft: 0,
-              marginLeft: -8, // slight nudge back
+              paddingLeft: 60,
+              marginLeft: -16, // hide empty y-axis padding inside the chart component
               marginBottom: 4,
             }}
           />
