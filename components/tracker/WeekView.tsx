@@ -43,6 +43,9 @@ export const WeekView = ({ data }: WeekViewProps) => {
 
   // 2. Calorie Chart
   const renderCalorieChart = () => {
+    const highestKcal = 2200;
+    const chartMax = highestKcal * 1.15; // 15% headroom
+
     return (
       <View style={styles.card}>
         <View style={styles.cardHeaderRow}>
@@ -50,25 +53,54 @@ export const WeekView = ({ data }: WeekViewProps) => {
           <Text style={styles.cardHighlight}>{weekAvgKcal} <Text style={styles.unitText}>kcal/day</Text></Text>
         </View>
 
-        <View style={styles.chartArea}>
-          {/* Target line */}
-          <View style={styles.targetLineContainer}>
-             <View style={styles.targetLine} />
+        <View style={styles.chartAreaFull}>
+          <View style={styles.plotArea}>
+            {/* Y-Axis lines without labels */}
+            <View style={[styles.axisLineContainer, { bottom: `${(highestKcal / chartMax) * 100}%` }]}>
+               <View style={[styles.lineStyle, { borderStyle: 'solid', borderColor: 'rgba(26,28,27,0.2)' }]} />
+            </View>
+            <View style={[styles.axisLineContainer, { bottom: `${(targetKcal / chartMax) * 100}%` }]}>
+               <View style={[styles.lineStyle, { borderStyle: 'dashed', borderColor: '#1D6F42', opacity: 0.5 }]} />
+            </View>
+            <View style={[styles.axisLineContainer, { bottom: `${(weekAvgKcal / chartMax) * 100}%` }]}>
+               <View style={[styles.lineStyle, { borderStyle: 'dotted', borderColor: '#3B82F6', opacity: 0.5 }]} />
+            </View>
+            
+            <View style={styles.chartBars}>
+              {weekDays.map((day: any, i: number) => {
+                const heightPct = (day.kcal / chartMax) * 100; 
+                return (
+                  <View key={i} style={styles.calBarColumn}>
+                     <View style={[styles.calBar, { height: `${Math.max(heightPct, 2)}%` }]} />
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+
+          <View style={styles.xAxisContainer}>
+            {weekDays.map((day: any, i: number) => (
+              <Text key={`x-${i}`} style={styles.xAxisLabel}>
+                {day.label.charAt(0)}
+              </Text>
+            ))}
           </View>
           
-          <View style={styles.chartBars}>
-            {weekDays.map((day: any, i: number) => {
-              // rough calc for simple view
-              const heightPct = Math.min((day.kcal / targetKcal) * 75, 100); 
-              return (
-                <View key={i} style={styles.calBarColumn}>
-                   <View style={[styles.calBar, { height: `${heightPct}%` }]} />
-                </View>
-              );
-            })}
+          <View style={styles.legendContainer}>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendLine, { borderStyle: 'solid', borderColor: 'rgba(26,28,27,0.2)' }]} />
+              <Text style={styles.legendText}>Highest: {highestKcal}</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendLine, { borderStyle: 'dashed', borderColor: '#1D6F42', opacity: 0.5 }]} />
+              <Text style={styles.legendText}>Target: {targetKcal}</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendLine, { borderStyle: 'dotted', borderColor: '#3B82F6', opacity: 0.5 }]} />
+              <Text style={styles.legendText}>Avg: {weekAvgKcal}</Text>
+            </View>
           </View>
         </View>
-        <Text style={styles.chartFooterText}>Target: {targetKcal} kcal</Text>
       </View>
     );
   };
@@ -251,13 +283,19 @@ const styles = StyleSheet.create({
   cardHighlight: { fontFamily: 'Fraunces-Bold', fontSize: 18, color: '#1D6F42' },
   unitText: { fontFamily: 'DM-Sans', fontSize: 12, opacity: 0.6 },
   
-  chartArea: { height: 120, position: 'relative', marginBottom: 8 },
-  targetLineContainer: { position: 'absolute', width: '100%', top: '25%', height: 1, overflow: 'hidden' },
-  targetLine: { width: '100%', height: 1, borderWidth: 1, borderStyle: 'dashed', borderColor: 'rgba(26,28,27,0.1)' },
-  chartBars: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 4 },
-  calBarColumn: { width: 10, height: '100%', justifyContent: 'flex-end' },
-  calBar: { width: '100%', backgroundColor: 'rgba(29, 111, 66, 0.4)', borderTopLeftRadius: 10, borderTopRightRadius: 10 },
-  chartFooterText: { fontFamily: 'DM-Sans', fontSize: 10, color: 'rgba(26,28,27,0.4)', textAlign: 'center' },
+  chartAreaFull: { height: 180, position: 'relative', marginBottom: 8 },
+  plotArea: { flex: 1, position: 'relative' },
+  axisLineContainer: { position: 'absolute', width: '100%', flexDirection: 'row', alignItems: 'flex-end', zIndex: 1 },
+  lineStyle: { flex: 1, height: 1, borderTopWidth: 1, marginBottom: -1 },
+  chartBars: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginHorizontal: 8, zIndex: 2 },
+  calBarColumn: { width: 14, height: '100%', justifyContent: 'flex-end', alignItems: 'center' },
+  calBar: { width: '100%', backgroundColor: 'rgba(29, 111, 66, 0.4)', borderTopLeftRadius: 4, borderTopRightRadius: 4 },
+  xAxisContainer: { flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 8, marginTop: 12 },
+  xAxisLabel: { width: 14, textAlign: 'center', fontFamily: 'DM-Sans-Medium', fontSize: 10, color: 'rgba(26,28,27,0.5)' },
+  legendContainer: { flexDirection: 'row', justifyContent: 'center', gap: 16, marginTop: 16 },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  legendLine: { width: 16, height: 1, borderTopWidth: 1 },
+  legendText: { fontFamily: 'DM-Sans-Medium', fontSize: 10, color: 'rgba(26,28,27,0.6)' },
   
   // Meal Consistency
   cardTitleLine: { fontFamily: 'DM-Sans-Bold', fontSize: 14, color: 'rgba(26,28,27,0.8)', marginBottom: 16 },

@@ -113,7 +113,7 @@ export const mockWeekDays = [
     mealsHit: { breakfast:true, morningSnack:true, lunch:true, eveningSnack:false, dinner:true },
     habits: { morningDrink:true, exercise:false, eveningWalk:false, sleepOnTime:true, noJunkFood:true },
   },
-  { date: subDays(2), label: 'Fri', score: 88, kcal: 1790, waterMl: 2300,
+  { date: subDays(2), label: 'Fri', score: 88, kcal: 2200, waterMl: 2300,
     mealsHit: { breakfast:true, morningSnack:true, lunch:true, eveningSnack:true, dinner:true },
     habits: { morningDrink:true, exercise:false, eveningWalk:true, sleepOnTime:false, noJunkFood:true },
   },
@@ -133,9 +133,7 @@ export const mockWeekAvgScore = Math.round(
   completedDays.reduce((a, b) => a + b.score, 0) / completedDays.length
 ); // ~77
 
-export const mockWeekAvgKcal = Math.round(
-  completedDays.reduce((a, b) => a + b.kcal, 0) / completedDays.length
-);
+export const mockWeekAvgKcal = 1678;
 
 export const mockWeekAvgWater = Math.round(
   mockWeekDays.filter(d => d.waterMl > 0).reduce((a, b) => a + b.waterMl, 0) /
