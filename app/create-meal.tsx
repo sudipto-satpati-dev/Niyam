@@ -62,7 +62,7 @@ export default function CreateMealScreen() {
       <ScrollView
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 72 }]}
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps="always"
       >
         {/* AI Onboarding Banner */}
         <View style={styles.aiBanner}>
@@ -197,7 +197,11 @@ export default function CreateMealScreen() {
 
         {/* Submit */}
         <View style={styles.submitSection}>
-          <TouchableOpacity style={styles.submitBtn} activeOpacity={0.88}>
+          <TouchableOpacity
+            style={styles.submitBtn}
+            activeOpacity={0.88}
+            onPress={() => router.push('/ai-crafting' as any)}
+          >
             <Ionicons name="sparkles" size={22} color="#ffffff" />
             <Text style={styles.submitBtnText}>Create my meal option</Text>
           </TouchableOpacity>
