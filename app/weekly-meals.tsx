@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   },
   bentoRight: {
     flex: 1,
-    backgroundColor: '#2ca25f',
+    backgroundColor: '#1d6f42',
     borderRadius: 24,
     padding: 24,
     justifyContent: 'space-between',
