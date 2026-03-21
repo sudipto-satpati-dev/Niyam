@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 
@@ -132,15 +133,20 @@ function TimelineRow({ item, status, onPress }: { item: TimelineItem; status: It
 }
 
 // ─── Main Screen ────────────────────────────────────────────────────────────
+import Sidebar from '../../components/home/Sidebar';
+
+// Inside HomeScreen:
 export default function HomeScreen() {
   const { today } = useDailyLogStore();
   const [refreshing, setRefreshing] = useState(false);
   const [activeMealKey, setActiveMealKey] = useState('');
   const [activeHabitKey, setActiveHabitKey] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [tick, setTick] = useState(0);
   const mealSheetRef = useRef<BottomSheet>(null);
   const habitSheetRef = useRef<BottomSheet>(null);
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const greeting = getGreeting();
   const completedCount = today.completedItems.length;
@@ -188,15 +194,23 @@ export default function HomeScreen() {
         {/* ══════ STICKY HEADER (does not scroll) ══════ */}
         <View>
           {/* ── Green Hero ── */}
-          <View style={[styles.hero, { paddingTop: insets.top + 8 }]}>
+          <View style={[styles.hero, { paddingTop: insets.top + 20 }]}>
             <View style={styles.topBar}>
-              <Image
-                source={require('../../assets/Logos/white-logo.png')}
-                style={styles.logo}
-                resizeMode="contain"
-              />
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <TouchableOpacity onPress={() => setIsSidebarOpen(true)} style={{ padding: 4, marginLeft: -4 }}>
+                  <Ionicons name="menu" size={28} color="white" />
+                </TouchableOpacity>
+                <Image
+                  source={require('../../assets/Logos/white-logo.png')}
+                  style={styles.logo}
+                  resizeMode="contain"
+                />
+              </View>
               <View style={styles.topBarRight}>
-                <TouchableOpacity style={styles.gearBtn}>
+                <TouchableOpacity 
+                  style={styles.gearBtn}
+                  onPress={() => router.push('/settings')}
+                >
                   <Ionicons name="settings-outline" size={22} color="white" />
                 </TouchableOpacity>
                 <View style={styles.avatar}>
@@ -271,6 +285,12 @@ export default function HomeScreen() {
           onMarkDone={() => { console.log('Done:', activeHabitKey); habitSheetRef.current?.close(); }}
           onSkip={() => { console.log('Skip:', activeHabitKey); habitSheetRef.current?.close(); }}
           onClose={() => setActiveHabitKey('')}
+        />
+
+        <Sidebar 
+          isOpen={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+          userName={user.name} 
         />
       </View>
     </GestureHandlerRootView>

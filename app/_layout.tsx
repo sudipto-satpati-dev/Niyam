@@ -47,6 +47,7 @@ export default function RootLayout() {
         <Stack.Screen name="intake-diet" options={{ headerShown: false }} />
         <Stack.Screen name="intake-activity" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="settings" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
