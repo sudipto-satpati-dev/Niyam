@@ -1,24 +1,24 @@
-import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
-import { useFocusEffect, useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { usePlanStore } from '../../stores/planStore';
-import { useDailyLogStore } from '../../stores/dailyLogStore';
-import { mockHomeState } from '../../Data/mockHomeState';
-import { MealType, MealOption } from '../../types/plan';
-import { MealTabBar } from '../../components/meals/MealTabBar';
-import { MealOptionCard } from '../../components/meals/MealOptionCard';
-import { CalorieSummaryBar } from '../../components/meals/CalorieSummaryBar';
-import { MealDetailSheet } from '../../components/meals/MealDetailSheet';
-import { DefaultPlanNote } from '../../components/meals/DefaultPlanNote';
-import Sidebar from '../../components/home/Sidebar';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import React, { useCallback, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Sidebar from '../../components/home/Sidebar';
+import { CalorieSummaryBar } from '../../components/meals/CalorieSummaryBar';
+import { DefaultPlanNote } from '../../components/meals/DefaultPlanNote';
+import { MealDetailSheet } from '../../components/meals/MealDetailSheet';
+import { MealOptionCard } from '../../components/meals/MealOptionCard';
+import { MealTabBar } from '../../components/meals/MealTabBar';
+import { mockHomeState } from '../../Data/mockHomeState';
+import { useDailyLogStore } from '../../stores/dailyLogStore';
+import { usePlanStore } from '../../stores/planStore';
+import { MealOption, MealType } from '../../types/plan';
 
 const getDefaultTab = (): MealType => {
   const now = new Date();
   const hour = now.getHours();
-  if (hour < 9)  return 'breakfast';
+  if (hour < 9) return 'breakfast';
   if (hour < 12) return 'morningSnack';
   if (hour < 15) return 'lunch';
   if (hour < 19) return 'eveningSnack';
@@ -35,12 +35,12 @@ export default function MealsScreen() {
 
   const mealOptions = usePlanStore(s => s.plan.meals[activeMealType] || []);
   const targetKcal = usePlanStore(s => s.plan.calorieTargets.total);
-  
+
   const todayMeals = useDailyLogStore(s => s.today.meals);
   const totalKcal = useDailyLogStore(s => s.getTodayKcal());
   const logMeal = useDailyLogStore(s => s.logMeal);
   const editMeal = useDailyLogStore(s => s.editMeal);
-  
+
   const loggedOption = todayMeals.find(m => m.mealKey === activeMealType);
   const isMealLogged = !!loggedOption;
 
@@ -85,11 +85,11 @@ export default function MealsScreen() {
       <View style={styles.topAppBar}>
         <View style={styles.topAppLeft}>
           <TouchableOpacity onPress={() => setIsSidebarOpen(true)} style={styles.menuIconBox}>
-             <Ionicons name="menu" size={28} color="#1D6F42" />
+            <Ionicons name="menu" size={28} color="#1D6F42" />
           </TouchableOpacity>
-          <Image 
-             source={require('../../assets/Logos/secondary-logo.png')} 
-             style={{ height: 28, width: 88, resizeMode: 'contain', marginLeft: 4 }} 
+          <Image
+            source={require('../../assets/Logos/secondary-logo.png')}
+            style={{ height: 28, width: 88, resizeMode: 'contain', marginLeft: 4 }}
           />
         </View>
         <View style={styles.topBarRight}>
@@ -97,18 +97,18 @@ export default function MealsScreen() {
             <Ionicons name="settings-outline" size={22} color="#1D6F42" />
           </TouchableOpacity>
           <View style={styles.avatar}>
-             <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+            <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.stickyHeaderContent}>
         <View style={styles.header}>
-           <Text style={styles.headerTitle}>Meals</Text>
-           <TouchableOpacity onPress={() => router.push('/weekly-meals' as any)} style={styles.thisWeekBtn}>
-             <Text style={styles.thisWeekText}>This week</Text>
-             <Ionicons name="chevron-forward" size={14} color="#1D6F42" />
-           </TouchableOpacity>
+          <Text style={styles.headerTitle}>Meals</Text>
+          <TouchableOpacity onPress={() => router.push('/weekly-meals' as any)} style={styles.thisWeekBtn}>
+            <Text style={styles.thisWeekText}>This week</Text>
+            <Ionicons name="chevron-forward" size={14} color="#1D6F42" />
+          </TouchableOpacity>
         </View>
 
         <MealTabBar activeTab={activeMealType} onTabSelect={setActiveMealType} />
@@ -117,7 +117,7 @@ export default function MealsScreen() {
           <CalorieSummaryBar loggedKcal={totalKcal} targetKcal={targetKcal} />
 
           <View style={styles.sectionHeader}>
-             <Text style={styles.sectionLabel}>CHOOSE YOUR {activeMealType.toUpperCase()}</Text>
+            <Text style={styles.sectionLabel}>CHOOSE YOUR {activeMealType.toUpperCase()}</Text>
           </View>
         </View>
       </View>
@@ -150,11 +150,21 @@ export default function MealsScreen() {
         onClose={() => setSelectedOptionForSheet(null)}
       />
 
-      <Sidebar 
-        isOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)} 
-        userName={user.name} 
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        userName={user.name}
       />
+
+      {/* Floating Add Meal Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push('/create-meal' as any)}
+        activeOpacity={0.85}
+      >
+        <Ionicons name="sparkles" size={18} color="#ffffff" />
+        <Text style={styles.fabText}>Add Meal with AI</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -251,6 +261,28 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 24,
-    paddingBottom: 100,
+    paddingBottom: 120,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 78,
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#00552e',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 50,
+    shadowColor: '#00552e',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  fabText: {
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 15,
+    color: '#ffffff',
   },
 });
