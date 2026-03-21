@@ -22,6 +22,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: '#1D6F42',
         tabBarInactiveTintColor: 'rgba(26,28,27,0.40)',
         tabBarLabelStyle: {

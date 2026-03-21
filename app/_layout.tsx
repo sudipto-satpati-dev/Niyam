@@ -51,6 +51,7 @@ export default function RootLayout() {
           <Stack.Screen name="intake-activity" options={{ headerShown: false }} />
           <Stack.Screen name="create-meal" options={{ headerShown: false }} />
           <Stack.Screen name="ai-crafting" options={{ headerShown: false }} />
+          <Stack.Screen name="ai-meal-result" options={{ headerShown: false }} />
           <Stack.Screen name="weekly-meals" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="settings" options={{ headerShown: false }} />
