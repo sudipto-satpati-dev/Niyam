@@ -249,23 +249,17 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 12,
     padding: 16,
-    shadowColor: '#1A1C1B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 20,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(191,201,190,0.15)',
   },
   cardHeaderOnly: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 12,
     padding: 20,
-    shadowColor: '#1A1C1B',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 20,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(191,201,190,0.15)',
   },
   
   // Week Score
@@ -314,7 +308,7 @@ const styles = StyleSheet.create({
   
   // Best Worst
   rowCards: { flexDirection: 'row', gap: 16 },
-  halfCard: { flex: 1, borderRadius: 24, padding: 12, borderWidth: 1 },
+  halfCard: { flex: 1, borderRadius: 12, padding: 12, borderWidth: 1 },
   dayLabel: { fontFamily: 'DM-Sans-Bold', fontSize: 14, color: '#1A1C1B', marginBottom: 2 },
   
   // Habits
