@@ -1,7 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { getCalorieNote, getMonthMealColor, getScoreColor } from '../../utils/trackerScore';
+import { LineChart } from 'react-native-chart-kit';
+
+const screenWidth = Dimensions.get('window').width;
 
 type MonthViewProps = {
   data: any; // Using the mock month data arrays/objects
@@ -46,6 +49,76 @@ export const MonthView = ({ data }: MonthViewProps) => {
               </View>
             );
           })}
+        </View>
+      </View>
+    );
+  };
+
+  // 1b. Score Trend Area Chart
+  const renderScoreTrend = () => {
+    // Generate smooth mock data for 4 weeks matching the "Peak: 92%" image
+    const data = {
+      labels: ['W1', 'W2', 'W3', 'W4'],
+      datasets: [
+        {
+          data: [60, 50, 92, 70],
+          color: (opacity = 1) => `rgba(29, 111, 66, ${opacity})`, // #1D6F42
+          strokeWidth: 3
+        }
+      ],
+    };
+
+    const chartConfig = {
+      backgroundGradientFrom: '#FFFFFF',
+      backgroundGradientTo: '#FFFFFF',
+      fillShadowGradientFrom: '#1D6F42',
+      fillShadowGradientFromOpacity: 0.1,
+      fillShadowGradientTo: '#1D6F42',
+      fillShadowGradientToOpacity: 0.0,
+      color: (opacity = 1) => `rgba(29, 111, 66, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(26,28,27,0.5)`,
+      strokeWidth: 3,
+      propsForDots: {
+        r: '0', 
+      },
+      useShadowColorFromDataset: false,
+    };
+
+    return (
+      <View style={{ marginTop: 8 }}>
+        <View style={[styles.card, { paddingHorizontal: 0, paddingBottom: 0, paddingTop: 0, overflow: 'hidden' }]}>
+          {/* Header inside the card */}
+          <View style={[styles.rowBetween, { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 16 }]}>
+            <Text style={styles.cardTitleMediumPrimary}>Score trend</Text>
+            <Text style={styles.cardValuePrimary}>76% <Text style={{ fontFamily: 'DM-Sans', fontSize: 12, opacity: 0.6 }}>avg</Text></Text>
+          </View>
+
+          {/* Custom Tooltip marker for the Peak */}
+          <View style={{ position: 'absolute', top: 56, left: '60%', backgroundColor: '#004A27', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, zIndex: 10 }}>
+            <Text style={{ fontFamily: 'DM-Sans-Bold', fontSize: 10, color: '#FFFFFF' }}>Peak: 92%</Text>
+          </View>
+          <View style={{ position: 'absolute', top: 82, left: '63.5%', width: 8, height: 8, borderRadius: 4, backgroundColor: '#004A27', zIndex: 10 }} />
+
+          <LineChart
+            data={data}
+            width={screenWidth - 24} // wider to ensure labels are contained
+            height={180}
+            chartConfig={chartConfig}
+            bezier
+            withInnerLines={false}
+            withOuterLines={false}
+            withVerticalLines={false}
+            withHorizontalLines={false}
+            withHorizontalLabels={false}
+            yAxisLabel=""
+            yAxisSuffix=""
+            style={{
+              paddingRight: 0,
+              paddingLeft: 0,
+              marginLeft: -8, // slight nudge back
+              marginBottom: 4,
+            }}
+          />
         </View>
       </View>
     );
@@ -235,6 +308,7 @@ export const MonthView = ({ data }: MonthViewProps) => {
       {renderMonthScore()}
       {renderKalories()}
       {renderCalendar()}
+      {renderScoreTrend()}
       {renderFoodHabits()}
       {renderWaterHabits()}
     </ScrollView>
