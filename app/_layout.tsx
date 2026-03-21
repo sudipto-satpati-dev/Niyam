@@ -12,6 +12,8 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
@@ -34,23 +36,25 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="welcome" options={{ headerShown: false }} />
-        <Stack.Screen name="welcome2" options={{ headerShown: false }} />
-        <Stack.Screen name="welcome3" options={{ headerShown: false }} />
-        <Stack.Screen name="choose-plan" options={{ headerShown: false }} />
-        <Stack.Screen name="basic-info" options={{ headerShown: false }} />
-        <Stack.Screen name="intake-goals" options={{ headerShown: false }} />
-        <Stack.Screen name="intake-schedule" options={{ headerShown: false }} />
-        <Stack.Screen name="intake-diet" options={{ headerShown: false }} />
-        <Stack.Screen name="intake-activity" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="settings" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="welcome" options={{ headerShown: false }} />
+          <Stack.Screen name="welcome2" options={{ headerShown: false }} />
+          <Stack.Screen name="welcome3" options={{ headerShown: false }} />
+          <Stack.Screen name="choose-plan" options={{ headerShown: false }} />
+          <Stack.Screen name="basic-info" options={{ headerShown: false }} />
+          <Stack.Screen name="intake-goals" options={{ headerShown: false }} />
+          <Stack.Screen name="intake-schedule" options={{ headerShown: false }} />
+          <Stack.Screen name="intake-diet" options={{ headerShown: false }} />
+          <Stack.Screen name="intake-activity" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="settings" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
