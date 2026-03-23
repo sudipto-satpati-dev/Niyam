@@ -158,7 +158,7 @@ export default function MealsScreen() {
 
       {/* Floating Add Meal Button */}
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { bottom: insets.bottom + 80 }]}
         onPress={() => router.push('/create-meal' as any)}
         activeOpacity={0.85}
       >

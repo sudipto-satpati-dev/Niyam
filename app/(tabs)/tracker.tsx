@@ -166,6 +166,16 @@ export default function TrackerScreen() {
         onClose={() => setIsSidebarOpen(false)}
         userName={user.name}
       />
+
+      {/* Floating Ask Niyam AI Button */}
+      <TouchableOpacity
+        style={[styles.fab, { bottom: insets.bottom + 80 }]}
+        onPress={() => router.push('/ask-niyam-ai' as any)}
+        activeOpacity={0.85}
+      >
+        <Ionicons name="sparkles" size={18} color="#ffffff" />
+        <Text style={styles.fabText}>Ask Niyam AI</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -201,4 +211,28 @@ const styles = StyleSheet.create({
   dateBtn: { padding: 4 },
   
   contentArea: { flex: 1 },
+
+  // FAB
+  fab: {
+    position: 'absolute',
+    // bottom is handled inline for insets
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#00552e',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 50,
+    shadowColor: '#00552e',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  fabText: {
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 15,
+    color: '#ffffff',
+  },
 });
