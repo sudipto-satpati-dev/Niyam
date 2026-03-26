@@ -1,29 +1,35 @@
 import { create } from 'zustand';
 import { mockMealOptions } from '../Data/mockMealOptions';
 import { mockTargetKcal } from '../Data/mockMealsState';
-import { MealOption, MealType } from '../types/plan';
+import { 
+  mockNonNegotiables, 
+  mockMorningDrink, 
+  mockAvoidList, 
+  mockWeekdayRoutine, 
+  mockWeekendRoutine, 
+  mockWeeklyTimeline 
+} from '../Data/mockHabitsData';
+import { MealOption, MealType, Plan } from '../types/plan';
 
 interface PlanState {
-  plan: {
-    meals: Record<string, MealOption[]>;
-    calorieTargets: {
-      total: number;
-    };
-    weight: {
-      goalWeightKg: number;
-      startWeightKg: number;
-      milestones: import('../types/weight').WeightMilestone[];
-    }
-  };
+  plan: Plan;
+  source: 'ai' | 'default';
   getDefaultOption: (mealKey: MealType) => MealOption;
   getMealOptions: (mealKey: MealType) => MealOption[];
 }
 
 export const usePlanStore = create<PlanState>((set, get) => ({
+  source: 'ai',
   plan: {
     meals: mockMealOptions,
     calorieTargets: {
       total: mockTargetKcal,
+      breakfast: 480,
+      morningSnack: 130,
+      lunch: 580,
+      eveningSnack: 130,
+      dinner: 490,
+      deficit: 450,
     },
     weight: {
       goalWeightKg: 66.0,
@@ -35,7 +41,21 @@ export const usePlanStore = create<PlanState>((set, get) => ({
         { weightKg: 66, label: 'Almost there',  weeksEstimate: 15, reached: false, isCurrent: false },
         { weightKg: 65, label: 'Goal!',         weeksEstimate: 17, reached: false, isCurrent: false },
       ],
-    }
+    },
+    habits: {
+      nonNegotiables: mockNonNegotiables,
+      morningDrink: mockMorningDrink,
+      avoidList: mockAvoidList,
+    },
+    weekdayRoutine: mockWeekdayRoutine,
+    weekendRoutine: mockWeekendRoutine,
+    weeklyTimeline: mockWeeklyTimeline,
+    goalSummary: 'Lose 8 kg in 4 months at ~0.5 kg/week',
+    stats: {
+      kcalPerDay: 1810,
+      mealsPerDay: 5,
+      workoutDays: 'Weekend only',
+    },
   },
   getDefaultOption: (mealKey: MealType): MealOption => {
     const options = get().plan.meals[mealKey];

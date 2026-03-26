@@ -16,6 +16,7 @@ export interface DailyLog {
   date: string;             // 'YYYY-MM-DD'
   meals: MealLogEntry[];
   habits: HabitLogEntry[];
+  acknowledgedRules: string[]; // IDs of non-negotiables
   completedItems: string[]; // time strings e.g. ['07:00', '10:30']
   totalKcal: number;
   dayScore: number;         // 0–100

@@ -15,6 +15,8 @@ interface DailyLogStore {
   getTodayKcal: () => number;
 
   logHabit: (log: HabitLogEntry) => void;
+  acknowledgeRule: (ruleId: string) => void;
+  unacknowledgeRule: (ruleId: string) => void;
   undoLog: (timeKey: string) => void;
   calculateDayScore: () => number;
   archiveDay: () => void;
@@ -32,6 +34,7 @@ export const useDailyLogStore = create<DailyLogStore>((set, get) => {
       ...mockDailyLog,
       meals: initialMeals,
       totalKcal: initialKcal,
+      acknowledgedRules: [],
     },
     history: [],
     streak: mockHomeState.streak,
@@ -73,7 +76,33 @@ export const useDailyLogStore = create<DailyLogStore>((set, get) => {
     },
     
     logHabit: (log) => {
-      console.log('Mock logged habit:', log);
+      set(state => ({
+        today: {
+          ...state.today,
+          habits: [...state.today.habits.filter(h => h.habitKey !== log.habitKey), log]
+        }
+      }));
+    },
+
+    acknowledgeRule: (ruleId: string) => {
+      set(state => {
+        if (state.today.acknowledgedRules.includes(ruleId)) return state;
+        return {
+          today: {
+            ...state.today,
+            acknowledgedRules: [...state.today.acknowledgedRules, ruleId]
+          }
+        };
+      });
+    },
+
+    unacknowledgeRule: (ruleId: string) => {
+      set(state => ({
+        today: {
+          ...state.today,
+          acknowledgedRules: state.today.acknowledgedRules.filter(id => id !== ruleId)
+        }
+      }));
     },
     
     undoLog: (timeKey) => {
