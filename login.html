@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Niyam</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e5e2e1",
+                        "inverse-on-surface": "#f1f1ef",
+                        "surface-variant": "#e2e3e1",
+                        "primary-fixed": "#a4f4bb",
+                        "surface-dim": "#dadad8",
+                        "primary-fixed-dim": "#88d8a1",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e2e3e1",
+                        "on-tertiary-container": "#dfdddc",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container-low": "#f4f4f2",
+                        "surface-container-high": "#e8e8e6",
+                        "secondary": "#885200",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#ffdcbb",
+                        "secondary-fixed-dim": "#ffb869",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eeeeec",
+                        "secondary-container": "#fdad4e",
+                        "on-primary-container": "#9fefb6",
+                        "on-background": "#1a1c1b",
+                        "surface-tint": "#196c3f",
+                        "on-surface": "#1a1c1b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#3f4941",
+                        "on-primary-fixed": "#00210e",
+                        "primary-container": "#1d6f42",
+                        "outline-variant": "#bfc9be",
+                        "primary": "#00552e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#704200",
+                        "inverse-primary": "#88d8a1",
+                        "surface-bright": "#f9f9f7",
+                        "on-secondary-fixed-variant": "#673d00",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#626161",
+                        "inverse-surface": "#2f3130",
+                        "on-primary-fixed-variant": "#00522c",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-secondary": "#ffffff",
+                        "background": "#f9f9f7",
+                        "tertiary": "#4a4949",
+                        "outline": "#6f7a70",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f9f9f7",
+                        "on-secondary-fixed": "#2b1700",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Fraunces", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .font-serif { font-family: 'Fraunces', serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F7F7F5] text-on-surface flex flex-col min-h-screen">
+<!-- Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 max-w-md mx-auto w-full">
+<!-- Logo Section -->
+<div class="mb-10 text-center">
+<img alt="Niyam Logo" class="h-20 w-auto mb-6" data-alt="Minimalist abstract logo design representing balance and wellness, deep forest green on a light cream background, organic shapes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfUVfV0dJAx_vM0-QrfNbqwkGXDbS8LHIRXwIEORkL9NYbXBT47Vw_q_eZtB7-LMzGROp2qhFMx924X95fyHzRWjaPtrTOJqM_jDmn_sBOxeEsmR8BPqvXjC6pl_oJgNqo5YaooMGnIqaUYhm55o2gOWWPK2sJIqs8WWvmiSPyxvtKJbKA_gHT3ZNBSiY_2v0frXhUhak9LC-jePYRMGQFIEUtVJJ2-0rbJFhxPKv1Qtu-TvV5FkHBosCirlTkC-HaisG2iaXdheZ5"/>
+</div>
+<!-- Headline -->
+<div class="text-center mb-10">
+<h1 class="text-4xl font-serif font-bold text-primary tracking-tight leading-tight">Welcome back</h1>
+<p class="text-on-surface-variant/70 mt-2 text-sm">Return to your path of modern wisdom.</p>
+</div>
+<!-- Login Form -->
+<form class="w-full space-y-5">
+<div>
+<label class="block text-[10px] font-bold font-sans uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="email">Email</label>
+<input class="w-full bg-surface-container border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary/30 transition-all" id="email" placeholder="vaidya@niyam.com" type="email"/>
+</div>
+<div class="relative">
+<label class="block text-[10px] font-bold font-sans uppercase tracking-widest text-on-surface-variant mb-2 ml-1" for="password">Password</label>
+<input class="w-full bg-surface-container border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary/30 transition-all" id="password" placeholder="••••••••" type="password"/>
+<div class="mt-3 text-right">
+<a class="text-secondary text-xs font-semibold hover:opacity-80 transition-opacity" href="#">Forgot Password?</a>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-gradient-to-b from-primary to-primary-container text-white font-bold py-4 rounded-xl shadow-sm active:scale-[0.98] transition-all mt-4" type="submit">
+                Login
+            </button>
+</form>
+<!-- Divider -->
+<div class="relative w-full flex items-center justify-center my-10">
+<div class="w-full h-[1px] bg-outline-variant/20"></div>
+<span class="absolute bg-[#F7F7F5] px-4 text-[10px] font-sans font-bold uppercase tracking-widest text-on-surface-variant/50">Or continue with</span>
+</div>
+<!-- Social Logins -->
+<div class="w-full space-y-4">
+<button class="w-full flex items-center justify-center gap-3 bg-surface-container-low py-4 rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-150 group">
+<img alt="Google" class="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzZewXj2Q_BKXXi0Ui3iZOsfyc7V4yVn04o3NJQIT-_HcmmOo-cMdkVLGmVB2RufxEgpObRJpjNEVrNBDEY2Fyd97uadeSaeFqhtS-_3D8CzH6FaHfonv_UwwVWahMAhINx4aaAhGheyDUruiE_S5PNZlWhu5LuVPkPsZIFMlBjZqkKD-gTudp1Hiy2MV11q9yVbA7yWLhfSSMOicIQwRyIxRvsvZfgd-cXVaDbbCPfT2KqID85M3qg9qkyl0NZt2gFrItQI7Bcjfy"/>
+<span class="text-sm font-semibold text-on-surface">Google</span>
+</button>
+<button class="w-full flex items-center justify-center gap-3 bg-surface-container-low py-4 rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-150 group">
+<span class="material-symbols-outlined text-on-surface opacity-80 group-hover:opacity-100 transition-opacity" data-icon="apple">ios</span>
+<span class="text-sm font-semibold text-on-surface">Apple</span>
+</button>
+</div>
+<!-- Footer Link -->
+<div class="mt-12 text-center">
+<p class="text-on-surface-variant/80 text-sm">
+                Don't have an account? 
+                <a class="text-primary font-bold hover:underline ml-1" href="#">Sign up</a>
+</p>
+</div>
+</main>
+<!-- Subtle Texture Background Element -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" data-alt="Subtle natural paper fiber texture for tactile editorial feel" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-IU8itdyXiroDuwBLZTSyl2tNFFpeYXSI2260S8xvoWi4D0NHZfl3PtYL5jYB4oMUW2vyWjGiYvWR6_Z3y0MmPuK_fZsDt7sa0LxvdELXGt7KySCLA3tasgmSryKLR4CvavP5JqiN5fnwqEcgAfYLXUf_Pj7oqOmuL7a_ilq6uNFM8s2GG1KjJstnkIDUuiH33XDfF_WGF1MLrq1djg6jXcJLH8BMaAopmmIZiYLMVeGtsUfGgdIlCOBK3CEDcxyu_ufO85Qnb8PY');"></div>
+</body></html>

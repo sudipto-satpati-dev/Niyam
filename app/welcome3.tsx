@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
@@ -12,7 +12,11 @@ export default function Welcome3Screen() {
   const insets = useSafeAreaInsets();
 
   const handleStart = () => {
-    router.replace('/choose-plan');
+    router.push('/signup');
+  };
+
+  const handleLogin = () => {
+    router.push('/login');
   };
 
   return (
@@ -99,18 +103,26 @@ export default function Welcome3Screen() {
 
         {/* Action Button */}
         <View style={styles.actions}>
-          <Pressable 
+          <Pressable
             style={({ pressed }) => [styles.primaryButton, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
             onPress={handleStart}
           >
             <Text style={styles.primaryButtonText}>Get started</Text>
             <MaterialIcons name="chevron-right" size={24} color="#ffffff" />
           </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [styles.loginButton, pressed && { opacity: 0.8 }]}
+            onPress={handleLogin}
+          >
+            <Text style={styles.loginButtonText}>ALREADY HAVE AN ACCOUNT? LOGIN</Text>
+          </Pressable>
         </View>
       </View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -317,5 +329,17 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontFamily: 'DM-Sans-SemiBold',
     fontSize: 18,
+  },
+  loginButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    marginTop: 8,
+  },
+  loginButtonText: {
+    color: 'rgba(63, 73, 65, 0.6)',
+    fontFamily: 'DM-Sans-Bold',
+    fontSize: 12,
+    letterSpacing: 1,
   },
 });
